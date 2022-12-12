@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang='fr'>
+
+<head>
+   <title>Sapin de noël</title>
+   <meta charset='utf-8'>
+   <meta name='viewport' content='width=device-width, initial-scale=1'>
+   <link rel='stylesheet' href='bootstrap.min.css'>
+   <link rel='stylesheet' href='style.css'>
+   <script src='jquery.min.js'></script>
+   <script src='bootstrap.min.js'></script>
+</head>
+
+<style>
+   body {
+      padding-top: 70px;
+      padding-left: 20px;
+      padding-right: 20px;
+   }
+</style>
+
+
+<body>
+
+   <script>
+      window.addEventListener
+         (
+            'popstate',
+            function (event) {
+               tab_change();
+            }
+         );
+
+      function tab_change() {
+         var hash = window.location.hash;
+         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+
+         $('.tab-link').click
+            (
+               function (e) {
+                  $(this).tab('show');
+
+                  var scrollmem = $('body').scrollTop() || $('html').scrollTop();
+                  window.location.hash = this.hash;
+                  $('html,body').scrollTop(scrollmem);
+
+                  $('ul.nav-tabs a[href="' + window.location.hash + '"]').tab('show');
+               }
+            );
+      }
+
+   </script>
+
+
+   <!-- 
+        <a href='/synctime' class='btn btn-default'>Update NTP time</a>
+        -->
+
+   <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+         <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand">Sapin de Noël %softwareVersion%</a>
+         </div>
+
+         <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+               <!-- class="active" -->
+               <li class="active" %navBar_home_active%><a data-toggle="tab" href="#home">Animations</a></li>
+               <li %navBar_ledConfig_active%><a data-toggle="tab" href="#ledConfig">DELS</a></li>
+               <li %navBar_wifi_active%><a data-toggle="tab" href="#wifi">WiFi</a></li>
+               <li %navBar_NTPConfig_active%><a data-toggle="tab" href="#NTPConfig">NTP</a></li>
+               <li %navBar_status_active%><a data-toggle="tab" href="#status">Statut</a></li>
+               <li %navBar_FWUpdate_active%><a data-toggle="tab" href="#FWUpdate">M-À-J</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav ">
+               <p class="navbar-btn">
+                  <a href="/reboot" class="btn btn-default">Redémarrage</a>
+                  <a href="/sourcecode.zip" class="btn btn-default">Code source</a>
+               </p>
+
+
+
+            </ul>
+
+
+            <script>
+               $('.navbar-collapse a').click(function () {
+                  $(".navbar-collapse").collapse('hide');
+               });
+            </script>
+
+
+         </div>
+      </div>
+   </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <div class="tab-content">
+
+       <!-- class="tab-pane fade in active" -->
+      <div id="home" class="tab-pane fade in active" %tabContent_home_active%>
+
+         <form action='/' method='post'>
+            <div class='panel panel-primary'>
+               <div class='panel-heading'>Intensité lumineuse</div>
+               <div class='panel-body'>
+
+                  <div class='form-group'>
+                     <div class="slidecontainer">
+                        <label for='currentBrightness'>Intensité</label>
+                        <input type="range" min="0" max="255" value="%currentBrightness%" class="slider"
+                           name="currentBrightness" id="currentBrightness">
+                        <p>Valeur: <span id="currentBrightness_value"></span></p>
+                     </div>
+                     <script>
+                        var slider_currentBrightness = document.getElementById("currentBrightness");
+                        var output_currentBrightness = document.getElementById("currentBrightness_value");
+                        output_currentBrightness.innerHTML = slider_currentBrightness.value;
+                        slider_currentBrightness.oninput = function () {
+                           output_currentBrightness.innerHTML = this.value;
+                        }
+                     </script>
+                  </div>
+
+                  <div class='form-group'>
+                     <label for="currentProgram">Programme courant</label>
+                     <select class="form-control" id="currentProgram" name="currentProgram">
+                        <option %currentProgram_00_sel% value=0>Arrêt</option>
+                        <option %currentProgram_01_sel% value=1>%pp1_name%</option>
+                        <option %currentProgram_02_sel% value=2>L'arbre est en feu!</option>
+                        <option %currentProgram_03_sel% value=3>Jungle</option>
+                        <option %currentProgram_04_sel% value=4>Tempo</option>
+                        <option %currentProgram_05_sel% value=5>Serpent</option>
+                        <option %currentProgram_06_sel% value=6>Confettis</option>
+                        <option %currentProgram_07_sel% value=7>Arc-en-ciel fluide</option>
+                        <option %currentProgram_08_sel% value=8>Arc-en-ciel saccadé</option>
+                        <option %currentProgram_09_sel% value=9>Frozen</option>
+                        <option %currentProgram_10_sel% value=10>Noël irlandais</option>
+                        <option %currentProgram_11_sel% value=11>Boule disco</option>
+                        <option %currentProgram_12_sel% value=12>Noël blanc</option>
+                     </select>
+                  </div>
+               </div>
+               <div class='panel-footer'>
+                  <button type='submit' class='btn btn-default'>Appliquer</button>
+               </div>
+            </div>
+         </form>
+
+
+
+
+
+
+
+         <form action='/' method='post'>
+            <div class='panel panel-primary'>
+               <div class='panel-heading'>Programme personalisé 1</div>
+               <div class='panel-body'>
+
+                  <div class='form-group'>
+                     <label for='pp1_name'>Nom</label>
+                     <input type='text' class='form-control' id='pp1_name' name='pp1_name' value='%pp1_name%'>
+                  </div>
+
+
+                  <div class='form-group'>
+                     <label for="pp1_animType">Type d'animation</label>
+                     <select class="form-control" id="pp1_animType" name="pp1_animType">
+                        <option %pp1_animType_00_sel% value=0>Aucune</option>
+                        <option %pp1_animType_01_sel% value=1>Rotation</option>
+                        <option %pp1_animType_02_sel% value=2>Clignotement</option>
+                        <option %pp1_animType_03_sel% value=3>Confetti</option>
+                        <option %pp1_animType_04_sel% value=4>Rebonds</option>
+                        <option %pp1_animType_05_sel% value=5>Rayons</option>
+                     </select>
+                  </div>
+
+                  <div class='form-group'>
+                     <div class="slidecontainer">
+                        <label for='pp1_animSpeed'>Vitesse d'animation</label>
+                        <input type="range" min="1" max="120" value="%pp1_animSpeed%" class="slider"
+                           name="pp1_animSpeed" id="pp1_animSpeed">
+                        <p>Valeur: <span id="pp1_animSpeed_value"></span></p>
+                     </div>
+                     <script>
+                        var slider_pp1_animSpeed = document.getElementById("pp1_animSpeed");
+                        var output_pp1_animSpeed = document.getElementById("pp1_animSpeed_value");
+                        output_pp1_animSpeed.innerHTML = slider_pp1_animSpeed.value;
+                        slider_pp1_animSpeed.oninput = function () {
+                           output_pp1_animSpeed.innerHTML = this.value;
+                        }
+                     </script>
+                  </div>
+
+                  <div class='form-group'>
+                     <div class="slidecontainer">
+                        <label for='pp1_chanceOfGlitter'>Ajout de paillettes</label><br>
+                        <input type="checkbox" id="pp1_glitter" name="pp1_glitter" value="enabled" %pp1_glitter_chk%>
+                        <label for="pp1_glitter">&nbspActivé</label>
+                        <input type="range" min="63" max="191" value="%pp1_chanceOfGlitter%" class="slider"
+                           name="pp1_chanceOfGlitter" id="pp1_chanceOfGlitter">
+                        <p>Valeur: <span id="pp1_chanceOfGlitter_value"></span></p>
+                     </div>
+                     <script>
+                        var slider_pp1_chanceOfGlitter = document.getElementById("pp1_chanceOfGlitter");
+                        var output_pp1_chanceOfGlitter = document.getElementById("pp1_chanceOfGlitter_value");
+                        output_pp1_chanceOfGlitter.innerHTML = slider_pp1_chanceOfGlitter.value;
+                        slider_pp1_chanceOfGlitter.oninput = function () {
+                           output_pp1_chanceOfGlitter.innerHTML = this.value;
+                        }
+                     </script>
+                  </div>
+
+                  <div class='form-group'>
+                     <div class="slidecontainer">
+                        <label for='pp1_fadeAmount'>Vitesse de fondu</label><br>
+                        <input type="range" min="1" max="40" value="%pp1_fadeAmount%" class="slider"
+                           name="pp1_fadeAmount" id="pp1_fadeAmount">
+                        <p>Valeur: <span id="pp1_fadeAmount_value"></span></p>
+                     </div>
+                     <script>
+                        var slider_pp1_fadeAmount = document.getElementById("pp1_fadeAmount");
+                        var output_pp1_fadeAmount = document.getElementById("pp1_fadeAmount_value");
+                        output_pp1_fadeAmount.innerHTML = slider_pp1_fadeAmount.value;
+                        slider_pp1_fadeAmount.oninput = function () {
+                           output_pp1_fadeAmount.innerHTML = this.value;
+                        }
+                     </script>
+                  </div>
+
+
+
+
+
+
+
+
+
+
+
+                  <!--
+
+
+                  <div class='form-group'>
+                     <label for="pp1_options">Options</label>
+                     <div id="pp1_options" name="pp1_options">
+
+                        <input type="radio" id="pp1_alternateMode" name="pp1_mode" value="alternate"
+                           %pp1_alternateMode_chk%>&nbspMode alterné<br>
+                        &nbsp&nbsp&nbsp&nbsp<input type="checkbox" id="pp1_alternateMode_checkbox"
+                           name="pp1_ignoreBlack" value="ignoreBlack" %pp1_ignoreBlack_chk%>&nbspIgnorer la
+                        couleur noir<br>
+                        &nbsp&nbsp&nbsp&nbsp<input type="checkbox" id="pp1_alternateMode_checkbox"
+                           name="pp1_randomColor" value="randomColor" %pp1_randomColor_chk%>&nbspOrdre des
+                        couleurs aléatoire<br>
+
+                        <input type="radio" id="pp1_continuousMode" name="pp1_mode" value="continuous"
+                           %pp1_continuousMode_chk%>&nbspMode continu<br>
+                        &nbsp&nbsp&nbsp&nbsp<input type="checkbox" id="pp1_continuousMode_checkbox"
+                           name="pp1_linearExtrapolation" value="linearExtrapolation"
+                           %pp1_linearExtrapolation_chk%>&nbspDégradé<br>
+
+                        Tous les modes<br>   
+                        &nbsp&nbsp&nbsp&nbsp<input type="checkbox" id="ppp1_continuousMode_checkbox"
+                           name="pp1_glitter" value="glitter" %pp1_glitter_chk%>&nbspAjout de
+                        paillettes<br>
+
+
+                        <script>
+                           document.getElementById('pp1_alternateMode').onclick = function () {
+                              var pp1_alternateMode = this.checked; // true or false
+                              var continuousRadios = this.form.elements['pp1_continuousMode_checkbox'];
+                              var alternateRadios = this.form.elements['pp1_alternateMode_checkbox'];
+                              continuousRadios = [continuousRadios];
+
+                              for (var i = 0, len = continuousRadios.length; i < len; i++) {
+                                 var r = continuousRadios[i];
+                                 if (pp1_alternateMode) {
+                                    r.disabled = true;
+                                    r.checked = false;
+                                 } else {
+                                    r.disabled = false;
+                                 }
+                              }
+
+                              for (var i = 0, len = alternateRadios.length; i < len; i++) {
+                                 var r = alternateRadios[i];
+                                 if (pp1_alternateMode) {
+                                    r.disabled = false;
+                                    r.checked = false;
+                                 } else {
+                                    r.disabled = true;
+                                 }
+                              }
+                           }
+
+                           document.getElementById('pp1_continuousMode').onclick = function () {
+                              var pp1_continuousMode = this.checked; // true or false
+                              var continuousRadios = this.form.elements['pp1_continuousMode_checkbox'];
+                              var alternateRadios = this.form.elements['pp1_alternateMode_checkbox'];
+                              continuousRadios = [continuousRadios];
+
+                              for (var i = 0, len = alternateRadios.length; i < len; i++) {
+                                 var r = alternateRadios[i];
+                                 if (pp1_continuousMode) {
+                                    r.disabled = true;
+                                    r.checked = false;
+                                 } else {
+                                    r.disabled = false;
+                                 }
+                              }
+
+                              for (var i = 0, len = continuousRadios.length; i < len; i++) {
+                                 var r = continuousRadios[i];
+                                 if (pp1_continuousMode) {
+                                    r.disabled = false;
+                                    r.checked = false;
+                                 } else {
+                                    r.disabled = true;
+                                 }
+                              }
+                           }
+                        </script>
+
+
+
+
+                     </div>
+
+                  </div>
+
+                     -->
+
+                  <div class='form-group'>
+                     <label for="pp1_fillMode">Type de remplissage de couleurs</label>
+                     <select class="form-control" id="pp1_fillMode" name="pp1_fillMode">
+                        <option %pp1_fillMode_00_sel% value=0>Normal</option>
+                        <option %pp1_fillMode_01_sel% value=1>Simple</option>
+                        <option %pp1_fillMode_02_sel% value=2>Séquence</option>
+                        <option %pp1_fillMode_03_sel% value=3>Échelle</option>
+                        <option %pp1_fillMode_04_sel% value=4>Aléatoire</option>
+                     </select>
+                  </div>
+
+                  <div class='form-group'>
+                     <label for="pp1_pallette">Palette de couleurs</label>
+                     <select class="form-control" id="pp1_pallette" name="pp1_pallette">
+                        <option %pp1_pallette_00_sel% value=0>Personalisée</option>
+                        <option %pp1_pallette_01_sel% value=1>Ciel nuageux</option>
+                        <option %pp1_pallette_02_sel% value=2>Lave</option>
+                        <option %pp1_pallette_03_sel% value=3>Océan</option>
+                        <option %pp1_pallette_04_sel% value=4>Forêt</option>
+                        <option %pp1_pallette_05_sel% value=5>Arc-en-ciel</option>
+                        <option %pp1_pallette_06_sel% value=6>Arc-en-ciel saccadé </option>
+                        <option %pp1_pallette_07_sel% value=7>Party</option>
+                        <option %pp1_pallette_08_sel% value=8>Chaleur</option>
+                        <option %pp1_pallette_09_sel% value=9>Canadiens de Montréal</option>
+                        <option %pp1_pallette_10_sel% value=10>Noël traditionnel</option>
+                     </select>
+                  </div>
+
+                  <div class='form-group'>
+                     <label>Palette de couleurs personnalisée</label>
+                     <br>
+                     <input type="color" id="pp1_color0" name="pp1_color0" value="%pp1_color0%">
+                     <input type="color" id="pp1_color1" name="pp1_color1" value="%pp1_color1%">
+                     <input type="color" id="pp1_color2" name="pp1_color2" value="%pp1_color2%">
+                     <input type="color" id="pp1_color3" name="pp1_color3" value="%pp1_color3%">
+                     <input type="color" id="pp1_color4" name="pp1_color4" value="%pp1_color4%">
+                     <input type="color" id="pp1_color5" name="pp1_color5" value="%pp1_color5%">
+                     <input type="color" id="pp1_color6" name="pp1_color6" value="%pp1_color6%">
+                     <input type="color" id="pp1_color7" name="pp1_color7" value="%pp1_color7%">
+                  </div>
+
+
+               </div>
+               <div class='panel-footer'>
+                  <button type='submit' class='btn btn-default'>Appliquer</button>
+               </div>
+            </div>
+         </form>
+
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div id="status" class="tab-pane">
+         <div class='panel panel-primary'>
+            <div class='panel-heading'>Statut</div>
+            <div class='panel-body'>
+
+               <p>
+                  Adresse IP actuelle: %currentIP%<br>
+                  Date et heure (UTC) actuelle: %currentTimeUTC%<br>
+                  Date et heure (locale) actuelle: %currentTimeLocal%<br>
+                  Date et heure de la première mise-à-jour NTP après le dernier démarrage (UTC): %firstNTPUpdate%<br>
+                  Date et heure de la dernière mise-à-jour NTP (UTC): %lastNTPUpdate%<br>
+                  Correction d'horloge de la dernière mise-à-jour: %ntpTimeDiff%<br>
+                  Version du logiciel: %firmwareVersion%<br>
+                  Date et heure de compilation du logicidel: %firmwareCompileTime%<br>
+               </p>
+            </div>
+            <div class='panel-footer'>
+               <button type='submit' class='btn btn-default'>Rafraîchir</button>
+            </div>
+         </div>
+
+      </div>
+
+
+
+
+      <div id="ledConfig" class="tab-pane">
+         <form action='/' method='post'>
+
+            <div class='panel panel-primary'>
+               <div class='panel-heading'>Configuration des DELS</div>
+               <div class='panel-body'>
+
+
+                  <div class='form-group'>
+                     <label for="hw_ledType">Type de lumières DEL.</label>
+                     <p>Les girlandes d'ampoules DEL programmables ont généralement des ampoules de type WS2811, le
+                        sapin de plywood utilise des APA106 alors que le sapin en circuit imprimé utilise des
+                        WS2812B.</p>
+                     <select class="form-control" id="hw_ledType" name="hw_ledType">
+                        <option %hw_ledType_APA106%>APA106</option>
+                        <option %hw_ledType_WS2811%>WS2811</option>
+                        <option %hw_ledType_WS2812B%>WS2812B</option>
+                     </select>
+                  </div>
+
+
+                  <label for="hw_numLeds">Longueur de la girlande d'ampoules DEL</label>
+                  <p>Les girlandes d'ampoules DEL programmables ont généralement 50 ampoules en série.
+                     Si vous utilisez 2 girlandes connectées l'une dans l'autre vous avez 100 ampoules en série.
+                     Les petits sapins de 5 étages en circuit imprimés ont 100 ampoules alors que les grands
+                     sapins de 7 étages ont 178 ampoules. Le sapin de plywood a 216 ampoules.</p>
+                  <div class="slidecontainer">
+                     <input type="range" min="1" max="255" value="%hw_numLeds%" class="slider"
+                        data-slider-id="hw_numLeds" id="hw_numLeds" name="hw_numLeds">
+                     <p>Longueur de la girlande d'ampoules DEL: <span id="hw_numLeds_value"></span></p>
+                  </div>
+                  <script>
+                     var slider_str_length = document.getElementById("hw_numLeds");
+                     var output_str_length = document.getElementById("hw_numLeds_value");
+                     output_str_length.innerHTML = slider_str_length.value;
+                     slider_str_length.oninput = function () {
+                        output_str_length.innerHTML = this.value;
+                     }
+                  </script>
+
+                  <label for="hw_numLeds">Nombre de girlandes d'ampoules DEL</label>
+                  <p>Dans certaines situations, plusieures girlandes d'ampoules DEL programmables
+                     sont connectées en parallèle. Si c'est votre cas, veuillez sélectionner le nombre de
+                     girlandes connectées.<br>
+                     Dans les cas des sapins, veuillez choisir 1.</p>
+                  <div class="slidecontainer">
+                     <input type="range" min="1" max="16" value="%hw_numStrings%" class="slider"
+                        data-slider-id="hw_numStrings" id="hw_numStrings" name="hw_numStrings">
+                     <p>Nombre de girlandes d'ampoules DEL: <span id="hw_numStrings_value"></span></p>
+                  </div>
+                  <script>
+                     var slider_str_nb = document.getElementById("hw_numStrings");
+                     var output_str_nb = document.getElementById("hw_numStrings_value");
+                     output_str_nb.innerHTML = slider_str_nb.value;
+                     slider_str_nb.oninput = function () {
+                        output_str_nb.innerHTML = this.value;
+                     }
+                  </script>
+
+
+
+
+
+
+
+                  <div class='form-group'>
+                     <label for="hw_maxAmp">Intensité maximale de l'alimentation électrique.</label>
+                     <p>Ce paramètre permet de limiter la consommation de courant électrique afin de ne pas excéder
+                        la capacité de la source.
+                        Si vous utilisez un chargeur USB veuiller sélectioner la valeur (à 5V) qui est inscrite sur
+                        se dernier. Si le sapin est
+                        branché directement dans un PC veuillez sélectionner 5A pour les ports USB de type A et 3A
+                        pourles ports USB de type C.</p>
+                     <select class="form-control" id="hw_maxAmp" name="hw_maxAmp">
+                        <option %hw_maxAmp_500%>0,5A</option>
+                        <option %hw_maxAmp_1000%>1A</option>
+                        <option %hw_maxAmp_1500%>1,5A</option>
+                        <option %hw_maxAmp_2000%>2A</option>
+                        <option %hw_maxAmp_2500%>2,5A</option>
+                        <option %hw_maxAmp_3000%>3A</option>
+                        <option %hw_maxAmp_3500%>3,5A</option>
+                        <option %hw_maxAmp_4000%>4</option>
+                        <option %hw_maxAmp_4500%>4,5A</option>
+                        <option %hw_maxAmp_5000%>5A</option>
+                     </select>
+                  </div>
+
+                  <div class='form-group'>
+
+                     <div class="slidecontainer">
+                        <label for="hw_initialBrightness">Intensité des DEL au démarrage</label>
+                        <p>
+                           Ce paramètre permet de sélectionner l'intensitée initiale des DEL au démarrage du sapin.<br>
+                           Valeur recommandée = 15
+                        </p>
+                        <input type="range" min="0" max="255" value="%hw_initialBrightness%" class="slider"
+                           name="hw_initialBrightness" id="hw_initialBrightness">
+                        <p>Valeur: <span id="hw_initialBrightness_value"></span></p>
+                     </div>
+                     <script>
+                        var slider_initial_brightness = document.getElementById("hw_initialBrightness");
+                        var output_initial_brightness = document.getElementById("hw_initialBrightness_value");
+                        output_initial_brightness.innerHTML = slider_initial_brightness.value;
+                        slider_initial_brightness.oninput = function () {
+                           output_initial_brightness.innerHTML = this.value;
+                        }
+                     </script>
+                  </div>
+
+
+
+
+                  <div class='form-group'>
+                     <label for="hw_ledPin">Broche de raccordement des DEL</label>
+                     <p>
+                        Ce paramètre permet de sélectionner sur quelle broche de l'ESP32 les broche de donnée des DEL
+                        est raccordée.<br>
+                        Sapin en circuit imprimés = 23
+                     </p>
+                     <select class="form-control" id="hw_ledPin" name="hw_ledPin">
+                        <option %hw_ledPin_23%>23</option>
+                        <option %hw_ledPin_25%>25</option>
+                        <option %hw_ledPin_26%>26</option>
+                        <option %hw_ledPin_2526% value=2526>25 & 26</option>
+                     </select>
+                  </div>
+
+                  <div class='form-group'>
+                     <label for="hw_programButtonPin">Broche de raccordement du bouton programme</label>
+                     <p>
+                        Ce paramètre permet de sélectionner sur quelle broche de l'ESP32 le bouton de sélection
+                        d'animation (programme) est raccordé.<br>
+                        Sapin en circuit imprimés = 26
+                     </p>
+                     <select class="form-control" id="hw_programButtonPin" name="hw_programButtonPin">
+                        <option %hw_programButtonPin_none% value=0>Aucun</option>
+                        <option %hw_programButtonPin_26%>26</option>
+                     </select>
+                  </div>
+
+                  <div class='form-group'>
+                     <label for="hw_brightnessButtonPin">Broche de raccordement du bouton intensité</label>
+                     <p>
+                        Ce paramètre permet de sélectionner sur quelle broche de l'ESP32 le bouton de sélection de
+                        l'intensité est raccordé.<br>
+                        Sapin en circuit imprimés = 25
+                     </p>
+                     <select class="form-control" id="hw_brightnessButtonPin" name="hw_brightnessButtonPin">
+                        <option %hw_brightnessButtonPin_none% value=0>Aucun</option>
+                        <option %hw_brightnessButtonPin_25%>25</option>
+                     </select>
+                  </div>
+
+
+                  <div class='form-group'>
+
+                     <label for="hw_colCorrect">Compensation de lumière blanche.</label>
+                     <p>Ce paramètre permet de calibrer la température couleur de la couleur blanche des DEL. Pour
+                        calibrer le sapin, vous devez
+                        d'abord fare afficher toutes les DEL en blanc puis sélectionner la couleur qui vous semble être
+                        la plus blanche selon votre
+                        environnement. Vous devrez appuyer sur appliquer à chaque essai de couleur pour voir l'effet.
+                     </p>
+
+                     <div class="slidecontainer">
+                        <input type="range" min="0" max="255" value="%hw_colCorrect_red%" class="slider"
+                           data-slider-id="hw_colCorrect_red" id="hw_colCorrect_red" name="hw_colCorrect_red">
+                        <p>Correction couleur rouge: <span id="hw_colCorrect_red_value"></span></p>
+                     </div>
+                     <script>
+                        var slider_red = document.getElementById("hw_colCorrect_red");
+                        var output_red = document.getElementById("hw_colCorrect_red_value");
+                        output_red.innerHTML = slider_red.value;
+                        slider_red.oninput = function () {
+                           output_red.innerHTML = this.value;
+                        }
+                     </script>
+
+                     <div class="slidecontainer">
+                        <input type="range" min="0" max="255" value="%hw_colCorrect_green%" class="slider"
+                           id="hw_colCorrect_green" name="hw_colCorrect_green">
+                        <p>Correction couleur vert: <span id="hw_colCorrect_green_value"></span></p>
+                     </div>
+                     <script>
+                        var slider_green = document.getElementById("hw_colCorrect_green");
+                        var output_green = document.getElementById("hw_colCorrect_green_value");
+                        output_green.innerHTML = slider_green.value;
+                        slider_green.oninput = function () {
+                           output_green.innerHTML = this.value;
+                        }
+                     </script>
+
+                     <div class="slidecontainer">
+                        <input type="range" min="0" max="255" value="%hw_colCorrect_blue%" class="slider"
+                           id="hw_colCorrect_blue" name="hw_colCorrect_blue">
+                        <p>Correction couleur bleu: <span id="hw_colCorrect_blue_value"></span></p>
+                     </div>
+                     <script>
+                        var slider_blue = document.getElementById("hw_colCorrect_blue");
+                        var output_blue = document.getElementById("hw_colCorrect_blue_value");
+                        output_blue.innerHTML = slider_blue.value;
+                        slider_blue.oninput = function () {
+                           output_blue.innerHTML = this.value;
+                        }
+                     </script>
+
+
+
+
+
+                  </div>
+
+
+
+
+
+               </div>
+               <div class='panel-footer'>
+                  <button type='submit' class='btn btn-default' href="#ledConfig">Appliquer</button>
+               </div>
+            </div>
+         </form>
+      </div>
+
+
+      <div class="tab-pane" id="wifi">
+
+         <form action='/' method='post'>
+            <div class='panel panel-primary'>
+               <div class='panel-heading'>Configuration du WiFi</div>
+               <div class='panel-body'>
+
+                  <div class='form-group'>
+                     <label for='wifi_ssid'>Nom du réseau WiFi</label>
+                     <input type='text' class='form-control' id='wifi_ssid' name='wifi_ssid' value='%wifi_ssid%'>
+                  </div>
+
+                  <div class='form-group'>
+                     <label for='wifi_password'>Mot de passe</label>
+                     <input type='password' class='form-control' id='wifi_password' name='wifi_password'
+                        value='%wifi_password%'>
+                  </div>
+
+                  <div class='form-group'>
+                     <label for='wifi_hostname'>Nom de l'ordinateur</label>
+                     <input type='text' class='form-control' id='wifi_hostname' name='wifi_hostname'
+                        value="%wifi_hostname%">
+                  </div>
+               </div>
+               <div class='panel-footer'>
+
+                  <a href="#wifi"><button type='submit' class='btn btn-default'>Appliquer</button></a>
+
+               </div>
+            </div>
+         </form>
+
+
+      </div>
+
+
+
+
+
+
+
+
+      <div id="NTPConfig" class="tab-pane fade">
+
+         <form action='/' method='post'>
+
+            <div class='panel panel-primary'>
+               <div class='panel-heading'>Configuration NTP</div>
+               <div class='panel-body'>
+
+                  <div class='form-group'>
+                     <label for='ntp_server1address'>Adresse du serveur 1</label>
+                     <input type='text' class='form-control' id='ntp_server1address' name='ntp_server1address'
+                        value='%ntp_server1address%'>
+                  </div>
+
+                  <div class='form-group'>
+                     <label for='ntp_server2address'>Adresse du serveur 2</label>
+                     <input type='text' class='form-control' id='ntp_server2address' name='ntp_server2address'
+                        value='%ntp_server2address%'>
+                  </div>
+
+                  <div class='form-group'>
+                     <label for='ntp_server3address'>Adresse du serveur 3</label>
+                     <input type='text' class='form-control' id='ntp_server3address' name='ntp_server3address'
+                        value='%ntp_server3address%'>
+                  </div>
+               </div>
+               <div class='panel-footer'>
+                  <button type='submit' class='btn btn-default'>Appliquer</button>
+               </div>
+            </div>
+         </form>
+
+
+         <form action='/' method='post'>
+
+            <div class='panel panel-primary'>
+               <div class='panel-heading'>Configuration du fuseau horaire</div>
+               <div class='panel-body'>
+
+                  <div class='form-group'>
+                     <label for='ntp_server3address'>Règle de configuration du fuseau horaire</label>
+                     <p>Le format de la règle de configuration du fuseau horaire est identique à celui utilisé par la
+                        fonction tzset() du language de programation C.
+                     </p>
+                     <p>&nbsp;&nbsp;&nbsp;&nbsp;heure_normale décalage[heure_d'été[décalage][,début[/fin],début[/fin]]]
+                     </p>
+                     <p>Il n'y a pas d'espace dans la spécification.</p>
+                     <p>La chaîne heure_normale spécifie une abréviation pour le fuseau horaire correspondant à l'heure
+                        normale et doit être de trois caractères alphabétiques ou plus. Lorsqu'elle est placée entre les
+                        signes inférieur à (<) et supérieur à (>),
+                           le jeu de caractères est augmenté pour inclure le signe plus (+), le signe moins (-) ainsi
+                           que les chiffres.</p>
+
+                     <p>
+                        La chaîne de décalage suit immédiatement std et spécifie la valeur de temps à ajouter à
+                        l'heure locale pour obtenir le temps universel coordonné (UTC).
+                     </p>
+                     Le décalage est positif si le fuseau horaire local est à l'ouest du méridien principal
+                     et négatif s'il est à l'est. L'heure doit être comprise entre 0 et 23, et les minutes et
+                     secondes entre 00 et 59
+                     </p>
+
+                     <p>&nbsp;&nbsp;&nbsp;&nbsp;[+|-]hh[:mm[:ss]]</p>
+                     <p>
+                        La chaîne heure_d'été et le décalage spécifient le nom et le décalage de l'heure d'été
+                        correspondant au fuseau horaire. Si le décalage est omis, il est par défaut une heure d'avance
+                        sur l'heure normale.
+
+                     </p>
+                     <p>
+                        Le champ de début spécifie quand l'heure d'été entre en vigueur et le champ de fin
+                        spécifie quand le retour à l'heure normale est effectué. Le format suivant est recommandé:
+                     </p>
+                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Mm.s.j</p>
+                     <p>
+                        Ceci spécifie le jour j (0 <= j <=6) de la semaine s (1 <=s <=5) du mois m (1 <=m <=12). La
+                           semaine 1 est la première semaine au cours de laquelle le jour d survient et la semaine 5 est
+                           la dernière semaine au cours de laquelle le jour d survient. Le jour 0 est un dimanche. </p>
+                           <p>
+                              Les champs d'heure spécifient quand, à l'heure locale actuellement en vigueur, le passage
+                              à
+                              l'autre heure se produit. En cas d'omission, la valeur par défaut est 02:00:00.
+                           </p>
+                           <p>
+                              Voici un exemple pour Montréal, Québec, Canada, où l'heure normale (EST) est 5
+                              heures en retard par rapport à l'UTC et où l'heure d'été (EDT) est 4 heures en retard par
+                              rapport à l'UTC, part du
+                              premier dimanche de novembre au deuxième dimanche de mars. Les changements ont lieu à
+                              l'heure par défaut
+                              de 02:00:00:
+                           </p>
+                           <p>
+                              &nbsp;&nbsp;&nbsp;&nbsp;EST5EDT4,M3.2.0/02:00:00,M11.1.0/02:00:00
+
+                           </p>
+                           <input type='text' class='form-control' id='time_tzInfoString' name='time_tzInfoString'
+                              value='%time_tzInfoString%'>
+                  </div>
+               </div>
+               <div class='panel-footer'>
+                  <button type='submit' class='btn btn-default'>Appliquer</button>
+               </div>
+            </div>
+         </form>
+
+
+
+
+      </div>
+
+      <div id="FWUpdate" class="tab-pane fade">
+
+         <form method='POST' action='/doUpdate' enctype='multipart/form-data'>
+
+            <div class='panel panel-danger'>
+
+               <div class='panel-heading'>Mise-à-jour du logiciel</div>
+               <div class='panel-body'>
+
+                  <label for='update'>Logiciel ou fichier SPIFFS au format .bin</label>
+                  <p>Le processus de mise-à-jour prendra environ une minute, pendant ce temps il est important de ne
+                     pas débrancher le sapin, de ne pas le redémarrer, de ne pas modifier ses paramètres et de ne pas
+                     rafraichir cette page. Une fois la mise-à-jour terminée le sapin redémarrera tout seul. Le m-à-j de
+                     la partion de données SPIFFS aura pour effet ré-intialiser tous les paramètres du sapin, incluant
+                     las paramètres WiFi. Pour cette raison, il est préférable de faire la mise-à-jour du logiciel en
+                     premier et la mise-à-jour de la partition SPIFFS par la suite.</p>
+
+                  <div class="input-group">
+                     <label class="input-group-btn">
+                        <span class="btn btn-default btn-file">
+                           Choisir&hellip; <input id="my-file-selector" type="file" name="update" accept=".bin"
+                              style="display:none;" onchange="$('#upload-file-info').val($(this).val());">
+                        </span>
+                     </label>
+                     <input type="text" class="form-control" id="upload-file-info" readonly>
+                  </div>
+
+               </div>
+               <div class='panel-footer'>
+                  <button type='submit' class='btn btn-default'>Mise-à-jour</button>
+               </div>
+            </div>
+         </form>
+      </div>
+
+
+
+
+      <p class="text-right">
+         (C) 2021 La famille Legrand<br>
+      </p>
+   </div>
+</body>
+
+</html>
